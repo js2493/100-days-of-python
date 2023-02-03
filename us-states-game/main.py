@@ -44,12 +44,10 @@ while correct_answers < 50:
         correct_answers += 1
 
 #states to learn
-
 missing_states = []
 for state in states_data.state:
     if state not in answered_states:
         missing_states.append(state)
-
 pandas.DataFrame(missing_states).to_csv("states_to_learn.csv")
 
 
