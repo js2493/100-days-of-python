@@ -34,12 +34,23 @@ while correct_answers < 50:
         answer = screen.textinput(title=f"{50 - correct_answers} states left",
                                   prompt="Guess the name of another state:")
     answer = answer[0:1].upper() + answer[1:].lower()
+    if answer == "Exit":
+        break
     if answer in states and answer not in answered_states:
         answered_states.append(answer)
         state_data = states_data[states_data.state == answer]
-        print(state_data)
         t.goto(int(state_data.x), int(state_data.y))
         t.write(answer)
         correct_answers += 1
 
-turtle.mainloop()
+#states to learn
+
+missing_states = []
+for state in states_data.state:
+    if state not in answered_states:
+        missing_states.append(state)
+
+pandas.DataFrame(missing_states).to_csv("states_to_learn.csv")
+
+
+
