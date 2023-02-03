@@ -35,6 +35,9 @@ while correct_answers < 50:
                                   prompt="Guess the name of another state:")
     answer = answer[0:1].upper() + answer[1:].lower()
     if answer == "Exit":
+        # states to learn
+        missing_states = [state for state in states_data.state if state not in answered_states]
+        pandas.DataFrame(missing_states).to_csv("states_to_learn.csv")
         break
     if answer in states and answer not in answered_states:
         answered_states.append(answer)
@@ -43,12 +46,7 @@ while correct_answers < 50:
         t.write(answer)
         correct_answers += 1
 
-#states to learn
-missing_states = []
-for state in states_data.state:
-    if state not in answered_states:
-        missing_states.append(state)
-pandas.DataFrame(missing_states).to_csv("states_to_learn.csv")
+
 
 
 
