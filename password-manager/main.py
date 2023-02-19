@@ -7,24 +7,26 @@ import os
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
-def generate_password():
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
-
-    password_letters = [choice(letters) for _ in range(randint(8, 10))]
-    password_symbols = [choice(symbols) for _ in range(randint(2, 4))]
-    password_numbers = [choice(numbers) for _ in range(randint(2, 4))]
-
-    password_list = password_letters + password_symbols + password_numbers
-    shuffle(password_list)
-
-    password = "".join(password_list)
-    password_input.insert(0, password)
-    pyperclip.copy(password)
+g
 # ---------------------------- SEARCH FOR INFO ------------------------------- #
 def search():
-    pass
+    file_name = "data.json"
+    site = site_input.get().lower()
+    try:
+        with open(file_name) as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No passwords saved yet!")
+    else:
+        found_site = False
+        for website in data:
+            if website.lower() == site:
+                username = data[website]["username"]
+                password = data[website]["password"]
+                messagebox.showinfo(title=website, message=f"Username: {username}\nPassword: {password}")
+                found_site = True
+        if not found_site:
+            messagebox.showinfo(title="Error", message=f"Password for {site_input.get()} not found!\nPlease try again.")
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
