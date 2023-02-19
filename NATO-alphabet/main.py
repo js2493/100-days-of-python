@@ -1,4 +1,3 @@
-
 import pandas
 import datetime
 
@@ -12,6 +11,16 @@ with open("log.txt", "a") as myfile:
 alphabet = pandas.read_csv("nato_phonetic_alphabet.csv")
 alphabet_dict = {row.letter: row.code for (index, row) in alphabet.iterrows()}
 
-word = input("Enter a word: ")
-result = [alphabet_dict[letter.upper()] for letter in word]
-print(result)
+
+def generate_phonetic():
+    word = input("Enter a word: ")
+    try:
+        result = [alphabet_dict[letter.upper()] for letter in word]
+    except KeyError:
+        print("Not a valid word: Please only use letters")
+        generate_phonetic()
+    else:
+        print(result)
+
+
+generate_phonetic()
