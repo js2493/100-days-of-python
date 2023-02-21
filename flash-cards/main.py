@@ -4,12 +4,12 @@ import random
 
 BACKGROUND_COLOR = "#B1DDC6"
 current_card = {}
+french_to_learn = {}
+original_french_data = pandas.read_csv("data/french_words.csv")
 
 try:
     french_data = pandas.read_csv("data/french_words_to_learn.csv")
 except FileNotFoundError:
-    original_french_data = pandas.read_csv("data/french_words.csv")
-    print(original_french_data)
     french_to_learn = original_french_data.to_dict(orient="records")
 else:
     french_to_learn = french_data.to_dict(orient="records")
@@ -17,6 +17,7 @@ else:
 
 def change_word():
     global current_card, flip_timer
+    print(len(french_to_learn))
     window.after_cancel(flip_timer)
     canvas.itemconfig(card_background, image=card_front)
     if french_to_learn:
@@ -43,6 +44,12 @@ def flip_card():
     canvas.itemconfig(card_background, image=card_back)
 
 
+def reset_cards():
+    global french_to_learn
+    french_to_learn = original_french_data.to_dict(orient="records")
+    change_word()
+
+
 window = tkinter.Tk()
 window.title("Flashcards")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
@@ -63,9 +70,11 @@ wrong_img = tkinter.PhotoImage(file="images/wrong.png")
 
 right_button = tkinter.Button(image=right_img, highlightthickness=0, command=remove_word)
 wrong_button = tkinter.Button(image=wrong_img, highlightthickness=0, command=change_word)
+reset_button = tkinter.Button(command=reset_cards, text="RESET")
 
 right_button.grid(row=1, column=0)
 wrong_button.grid(row=1, column=1)
+reset_button.grid(row=2, column=0)
 
 change_word()
 
