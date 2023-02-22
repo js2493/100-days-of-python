@@ -41,7 +41,7 @@ def remove_word():
 def flip_card():
     canvas.itemconfig(card_background, image=card_back)
     canvas.itemconfig(title, text="English", fill="white")
-    canvas.itemconfig(card_background, image=card_back)
+    canvas.itemconfig(word, text=current_card["English"], fill="white")
 
 
 def reset_cards():
@@ -70,7 +70,7 @@ wrong_img = tkinter.PhotoImage(file="images/wrong.png")
 
 right_button = tkinter.Button(image=right_img, highlightthickness=0, command=remove_word)
 wrong_button = tkinter.Button(image=wrong_img, highlightthickness=0, command=change_word)
-reset_button = tkinter.Button(command=reset_cards, text="RESET")
+reset_button = tkinter.Button(window, command=reset_cards, text="RESET", font=("Arial", 40), bg=BACKGROUND_COLOR, padx=5, pady=5, highlightthickness=0)
 
 right_button.grid(row=1, column=0)
 wrong_button.grid(row=1, column=1)
