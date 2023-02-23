@@ -22,6 +22,8 @@ def generate_password():
     shuffle(password_list)
 
     password = "".join(password_list)
+    if len(password_input.get()) > 0:
+        password_input.delete(0, END)
     password_input.insert(0, password)
     pyperclip.copy(password)
 
