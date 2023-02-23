@@ -1,21 +1,23 @@
 import requests
 import datetime
+import os
 from twilio.rest import Client
 import copy
 
 NUM_HOURS = 16  # number of hours in future to look at
 
-from_number = "number"  # Twilio number to send SMS from
-to_number = "number"  # Phone number to receive SMS
-api_key = "key"  # OpenWeather API key
-account_sid = 'account_sid'  # Twilio account SID
-auth_token = 'auth_token'  # Twilio authorization token
+from_number = os.getenv("TWI_FROM_NUM") # Twilio number to send SMS from
+to_number = os.getenv("TWI_TO_NUM") # Phone number to receive SMS - must be verified with Twilio
+api_key = os.getenv("OWM_KEY")  # OpenWeather API key with OneCall
+account_sid = os.getenv("TWI_SID") # Twilio account SID
+auth_token = os.getenv("TWI_TOKEN")  # Twilio authorization token
 
 # Los Angeles
-MY_LAT = 34.052235
-MY_LONG = -118.243683
+MY_LAT = 34.02648590051866
+MY_LONG = -118.34136307239534
 
 current_hour = datetime.datetime.now().hour
+
 OWM_endpoint = "https://api.openweathermap.org/data/3.0/onecall"
 parameters = {
     "lat": MY_LAT,
@@ -63,7 +65,7 @@ rain_msg: str
 if len(rain_hours) > 0:
     rain_start = rain_hours[0]
     rain_end = rain_hours[len(rain_hours) - 1]
-    if rain_end - rain_start < NUM_HOURS - 1:
+    if len(rain_hours) < NUM_HOURS:
         for i in range(len(rain_hours) - 1):
             if rain_hours[i] + 1 != rain_hours[i + 1]:
                 rain_periods.append([rain_start, rain_hours[i]])
@@ -71,6 +73,7 @@ if len(rain_hours) > 0:
         rain_periods.append([rain_start, rain_hours[len(rain_hours) - 1]])
         # if rain_hours[len(rain_hours)-1] - 1 != rain_hours[len(rain_hours)-2]:
         #     if rain_hours[len(rain_hours)-1]
+print(rain_periods)
 periods_AMPM = copy.deepcopy(rain_periods)
 for i in range(len(rain_periods)):
     if (periods_AMPM[i][0] + current_hour) % 24 < 12:
@@ -101,6 +104,8 @@ else:
             0] + " to " + str(
             rain_periods[len(rain_periods) - 1][1]) + periods_AMPM[len(rain_periods) - 1][1] + "."
         rain_msg = "It's going to rain today! 🌧️ from" + rain_msg
+
+print(rain_hours)
 
 weather_msg: str
 if len(rain_hours) > 0:
