@@ -4,7 +4,7 @@ import os
 from twilio.rest import Client
 import copy
 
-NUM_HOURS = 16  # number of hours in future to look at
+NUM_HOURS = 24  # number of hours in future to look at
 
 from_number = os.getenv("TWI_FROM_NUM") # Twilio number to send SMS from
 to_number = os.getenv("TWI_TO_NUM") # Phone number to receive SMS - must be verified with Twilio
